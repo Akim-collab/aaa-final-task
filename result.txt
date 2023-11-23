@@ -1,13 +1,8 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.8.18, pytest-7.4.0, pluggy-1.0.0 -- /Users/akimkalenuk/.conda/envs/aaa-final-task/bin/python
-cachedir: .pytest_cache
+platform darwin -- Python 3.8.18, pytest-7.4.0, pluggy-1.0.0
 rootdir: /Users/akimkalenuk/Documents/AAA/Python/aaa-final-task
-collecting ... collected 5 items
+collected 8 items
 
-tests.py::test_pizza_creation PASSED                                     [ 20%]
-tests.py::test_pizza_equality PASSED                                     [ 40%]
-tests.py::test_pizza_dict_representation PASSED                          [ 60%]
-tests.py::test_delivery PASSED                                           [ 80%]
-tests.py::test_pickup PASSED                                             [100%]
+tests.py ........                                                        [100%]
 
-============================== 5 passed in 0.02s ===============================
+============================== 8 passed in 0.02s ===============================

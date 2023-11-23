@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0e880989-2cfe-4e7f-876b-8d5fc095013b" name="Default Changelist" comment="" />
+    <list default="true" id="0e880989-2cfe-4e7f-876b-8d5fc095013b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cli.py" beforeDir="false" afterPath="$PROJECT_DIR$/cli.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/result.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,7 +33,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
   </component>
-  <component name="RunManager" selected="Python tests.pytest in tests.py">
+  <component name="RunManager" selected="Python.cli">
     <configuration name="cli" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="aaa-final-task" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -116,11 +121,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.cli" />
         <item itemvalue="Python tests.pytest in tests.py" />
         <item itemvalue="Python tests.pytest for tests.test_show_menu" />
         <item itemvalue="Python tests.pytest for tests.test_menu" />
         <item itemvalue="Python tests.pytest for tests.test_bake" />
-        <item itemvalue="Python.cli" />
       </list>
     </recent_temporary>
   </component>
@@ -145,5 +150,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

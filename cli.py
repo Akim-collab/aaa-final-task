@@ -1,7 +1,7 @@
 import click
 from typing import List
+import random
 from functools import wraps
-import time
 
 
 def log(template: str = '{}'):
@@ -33,11 +33,10 @@ def log(template: str = '{}'):
             Returns:
             - Any: The result of the decorated function.
             """
-            start_time = time.time()
             result = func(*args, **kwargs)
-            end_time = time.time()
+            time_taken = random.randint(2, 8)
             click.echo(f'{func.__name__} — '
-                       f'{template.format(end_time - start_time)}')
+                       f'{template.format(time_taken)}')
             return result
 
         return wrapper
@@ -69,7 +68,7 @@ class Pizza:
         """
         return {'size': self.size, 'ingredients': self.ingredients}
 
-    def __eq__(self, other: object) -> bool:
+    def __eq__(self, other: 'Pizza') -> bool:
         """
         Compares two Pizza objects for equality.
 
@@ -79,18 +78,56 @@ class Pizza:
         Returns:
         - bool: True if the pizzas are equal, False otherwise.
         """
-        if not isinstance(other, Pizza):
-            return NotImplemented
-        eq = self.size == other.size and self.ingredients == other.ingredients
-        return eq
+        return self.size == other.size and self.ingredients == other.ingredients
+
+
+class Margherita(Pizza):
+    def __init__(self, size: str):
+        """
+        Represents a Margherita pizza.
+
+        Parameters:
+        - size (str): Size of the pizza (e.g., 'L' or 'XL').
+
+        Returns:
+        - Margherita: A Margherita pizza object.
+        """
+        super().__init__(size, ['tomato sauce', 'mozzarella', 'tomatoes'])
+
+
+class Pepperoni(Pizza):
+    def __init__(self, size: str):
+        """
+        Represents a Pepperoni pizza.
+
+        Parameters:
+        - size (str): Size of the pizza (e.g., 'L' or 'XL').
+
+        Returns:
+        - Pepperoni: A Pepperoni pizza object.
+        """
+        super().__init__(size, ['tomato sauce', 'mozzarella', 'pepperoni'])
+
+
+class Hawaiian(Pizza):
+    def __init__(self, size: str):
+        """
+        Represents a Hawaiian pizza.
+
+        Parameters:
+        - size (str): Size of the pizza (e.g., 'L' or 'XL').
+
+        Returns:
+        - Hawaiian: A Hawaiian pizza object.
+        """
+        super().__init__(size, ['tomato sauce', 'mozzarella', 'chicken', 'pineapples'])
 
 
 class Menu:
     pizzas = {
-        'Margherita': Pizza('L', ['tomato sauce', 'mozzarella', 'tomatoes']),
-        'Pepperoni': Pizza('XL', ['tomato sauce', 'mozzarella', 'pepperoni']),
-        'Hawaiian': Pizza('L', ['tomato sauce', 'mozzarella',
-                                'chicken', 'pineapples'])
+        'margherita': Margherita,
+        'pepperoni': Pepperoni,
+        'hawaiian': Hawaiian
     }
 
 
@@ -100,46 +137,55 @@ def cli():
 
 
 @cli.command()
-@click.argument('pizza', nargs=1)
-@click.option('--delivery', default=False, is_flag=True,
-              help='Flag to indicate pizza delivery')
-def order(pizza: str, delivery: bool):
+@click.option('--delivery', default=False, is_flag=True, help='Flag to indicate pizza delivery')
+@click.argument('pizza_name', nargs=1)
+@click.argument('size', nargs=1, type=click.Choice(['L', 'XL']))
+def order(pizza_name: str, size: str, delivery: bool):
     """
-    Prepare and deliver pizza.
+    Prepare and deliver/pickup pizza.
 
     Parameters:
-    - pizza (str): Name of the pizza to be ordered.
-    - delivery (bool): Flag indicating whether
-    the pizza should be delivered.
+    - pizza_name (str): Name of the pizza to be ordered.
+    - size (str): Size of the pizza (L or XL).
+    - delivery (bool): Flag indicating whether the pizza should be delivered.
 
     Returns:
     - None
     """
-    try:
-        pizza_obj = Menu.pizzas.get(pizza)
-        # Adjust time based on pizza size
-        time_taken = 2 if pizza_obj.size == 'L' else 4
-        click.echo(f'Приготовили за {time_taken}с!')
+    pizza_name_lower = pizza_name.lower()
+    if pizza_name_lower in Menu.pizzas:
+        pizza_class = Menu.pizzas[pizza_name_lower]
+        pizza = pizza_class(size)
+        bake(pizza)
         if delivery:
-            click.echo('🛵 Доставили за 1с!')
-    finally:
+            deliver(pizza)
+        else:
+            pickup(pizza)
+    else:
         click.echo('Invalid pizza type. Please choose from the menu.')
 
 
 @cli.command()
-def menu():
+def show_menu():
     """
     Display available pizza menu.
 
     Returns:
     - None
     """
-    for name, pizza in Menu.pizzas.items():
-        click.echo(f'- {name} 🍕 : {", ".join(pizza.ingredients)}')
+    for name, pizza_class in Menu.pizzas.items():
+        pizza = pizza_class('L')
+        click.echo(f'- {name.capitalize()} 🍕 : {", ".join(pizza.ingredients)}')
+
+
+@log('Приготовили за {}с!')
+def bake(pizza: Pizza):
+    """Bakes pizza"""
+    pass
 
 
 @log('🛵 Доставили за {}с!')
-def delivery(pizza):
+def deliver(pizza):
     """
     Delivers a pizza.
 
@@ -149,6 +195,7 @@ def delivery(pizza):
     Returns:
     - str: A message indicating that the pizza has been delivered.
     """
+    print(f'Pizza delivered: {pizza.size} - {", ".join(pizza.ingredients)}')
     return f'Pizza delivered: {pizza.size} - {", ".join(pizza.ingredients)}'
 
 
@@ -165,6 +212,7 @@ def pickup(pizza):
     """
     string = f'Pizza ready for pickup: {pizza.size} - ' \
              f'{", ".join(pizza.ingredients)}'
+    print(string)
     return string
 
 

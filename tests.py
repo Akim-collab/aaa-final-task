@@ -1,12 +1,25 @@
 import pytest
+from click.testing import CliRunner
 
-from cli import Pizza, delivery, pickup
+from cli import Pizza, deliver, pickup, Margherita, Pepperoni, Hawaiian, show_menu
 
 
-def test_pizza_creation():
-    pizza = Pizza('L', ['tomato sauce', 'mozzarella', 'tomatoes'])
-    assert pizza.size == 'L'
-    assert pizza.ingredients == ['tomato sauce', 'mozzarella', 'tomatoes']
+def test_margherita_creation():
+    margherita = Margherita('L')
+    assert margherita.size == 'L'
+    assert margherita.ingredients == ['tomato sauce', 'mozzarella', 'tomatoes']
+
+
+def test_pepperoni_creation():
+    pepperoni = Pepperoni('XL')
+    assert pepperoni.size == 'XL'
+    assert pepperoni.ingredients == ['tomato sauce', 'mozzarella', 'pepperoni']
+
+
+def test_hawaiian_creation():
+    hawaiian = Hawaiian('L')
+    assert hawaiian.size == 'L'
+    assert hawaiian.ingredients == ['tomato sauce', 'mozzarella', 'chicken', 'pineapples']
 
 
 def test_pizza_equality():
@@ -22,9 +35,16 @@ def test_pizza_dict_representation():
     assert pizza.dict() == expected_dict
 
 
+def test_show_menu():
+    runner = CliRunner()
+    result = runner.invoke(show_menu)
+    assert 'Margherita 🍕 : tomato sauce, mozzarella, tomatoes' in result.output
+    assert 'Pepperoni 🍕 : tomato sauce, mozzarella, pepperoni' in result.output
+
+
 def test_delivery():
     pizza = Pizza('XL', ['tomato sauce', 'mozzarella', 'pepperoni'])
-    result = delivery(pizza)
+    result = deliver(pizza)
     assert 'Pizza delivered' in result
     assert 'XL - tomato sauce, mozzarella, pepperoni' in result
 
